@@ -6,7 +6,7 @@ module.exports = async function () {
 		host: path,
 		logging: false
 	});
-       //by ShAn
+
 	const threadModel = require("../models/sqlite/thread.js")(sequelize);
 	const userModel = require("../models/sqlite/user.js")(sequelize);
 	const dashBoardModel = require("../models/sqlite/userDashBoard.js")(sequelize);

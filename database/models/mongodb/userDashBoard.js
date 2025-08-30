@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-// by ShAn
+
 const userDashBoardModel = new Schema({
 	email: String,
 	name: String,

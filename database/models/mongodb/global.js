@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-// by ShAn
+
 const globalModel = new Schema({
 	key: {
 		type: String,

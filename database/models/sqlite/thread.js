@@ -1,6 +1,6 @@
 module.exports = function (sequelize) {
 	const { Model, DataTypes } = require("sequelize");
-	class threadModel extends Model { } // by ShAn
+	class threadModel extends Model { }
 	threadModel.init({
 		threadID: {
 			type: DataTypes.STRING,

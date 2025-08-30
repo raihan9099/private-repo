@@ -9,7 +9,7 @@ const optionsWriteJSON = {
 	spaces: 2,
 	EOL: "\n"
 };
-// by ShAn
+
 const taskQueue = new TaskQueue(function (task, callback) {
 	if (getType(task) === "AsyncFunction") {
 		task()

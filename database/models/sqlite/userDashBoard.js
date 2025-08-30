@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require("sequelize");
 
 module.exports = function (sequelize) {
-	class userModel extends Model { } // by ShAn
+	class userModel extends Model { }
 	userModel.init({
 		email: DataTypes.STRING,
 		name: DataTypes.STRING,
