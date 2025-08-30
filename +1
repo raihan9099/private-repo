@@ -1,0 +1,16 @@
+
+
+
+
+rd.js
+MOVING
+                                                              e  ^E  j  ^N  CR  *  Forward  one line   (or N lines).
+  y  ^Y  k  ^K  ^P  *  Backward one line   (or N lines).      ESC-j             *  Forward  one file line (or N file lin
+es).                                                          ESC-k             *  Backward one file line (or N file lin
+es).                                                          f  ^F  ^V  SPACE  *  Forward  one window (or N lines).
+  b  ^B  ESC-v      *  Backward one window (or N lines).      z                 *  Forward  one window (and set window t
+o N).
+  w                 *  Backward one window (and set window t
+o N).
+  ESC-SPACE         *  Forward  one window, but don't stop alog file:git add Database/data/userDashBoard.js
+git commit -m "Restore userD
