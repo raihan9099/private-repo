@@ -220,13 +220,13 @@ module.exports = function (api, threadModel, userModel, dashBoardModel, globalMo
 			// Check if message is just the prefix with no command
 			if (body.trim() === prefix.trim()) {
 				const prefixOnlyResponses = [
-					"That's just my prefix. Try -help to see all available commands",
-					"Try a command like -help",
-					"Looking for something? Try -pair",
-					"Need help? Use -help for commands!",
-					"This is my prefix only, try -4gen a cat",
-					"Just the prefix won't do! Try -help",
-					"⚠ Prefix + command provide korun!"
+					"That's just my prefix. Try /help to see all available commands",
+					"Try a command like /help",
+					"Looking for something? Try /gpt",
+					"Need help? Use /help for commands!",
+					"This is my prefix only, try /hgen",
+					"Just the prefix won't do! Try /help",
+					"⚠️ Add a command after the prefix!"
 				];
 				const randomResponse = prefixOnlyResponses[Math.floor(Math.random() * prefixOnlyResponses.length)];
 				return await message.reply(randomResponse);
@@ -272,7 +272,7 @@ module.exports = function (api, threadModel, userModel, dashBoardModel, globalMo
 			if (isGroup && !config.adminBot.includes(senderID)) {
 				// Skip authorization check for approve command (admins only anyway)
 				if (commandName !== "approve" && threadData.data.groupApproved !== true) {
-					const unauthorizedMsg = "⚠️ This group is not authorized to use this bot.  please contact admin  https://m.me/hydrocarbonn To get approval from admin Thanku🖤";
+					const unauthorizedMsg = "⚠️ This group is not authorized to use this bot. Please join bot supportgc: https://m.me/j/AbZX5he4yIFsgui_/\n\n to join and get approval from admin.";
 					return await message.reply(unauthorizedMsg);
 				}
 			}
@@ -326,10 +326,10 @@ module.exports = function (api, threadModel, userModel, dashBoardModel, globalMo
 					// If we found a good match, suggest it
 					if (bestMatch && bestDistance <= 2) {
 						const suggestions = [
-							`🙂 Command pawa jay nai. try  ${prefix}${bestMatch}?`,
-							`Dekhe mone hocche mistake hoyese!! Maybe you meant ${prefix}${bestMatch}?`,
+							`Did you mean: ${prefix}${bestMatch}?`,
+							`Looks like a typo! Maybe you meant ${prefix}${bestMatch}?`,
 							`Command not found. Did you mean ${prefix}${bestMatch}?`,
-							`❌ Command khuje pelam na. Try ${prefix}${bestMatch} instead?`
+							`❌ Unknown command. Try ${prefix}${bestMatch} instead?`
 						];
 						const randomSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
 						return await message.reply(randomSuggestion);
