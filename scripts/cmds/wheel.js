@@ -2,6 +2,19 @@ const LIMIT_INTERVAL_HOURS = 12;
 const MAX_PLAYS = 20;
 const MAX_BET = 6_000_000;
 
+// Function to convert numbers to fancy superscript
+function toFancyNumber(num) {
+  const superscripts = ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹'];
+  return num.toString().split('').map(digit => 
+    superscripts[parseInt(digit)] || digit
+  ).join('');
+}
+
+// Function to format numbers with commas and superscript
+function formatFancyNumber(num) {
+  return toFancyNumber(num.toLocaleString());
+}
+
 module.exports = {
   config: {
     name: "wheel",
@@ -104,17 +117,17 @@ module.exports = {
 
     // Wheel segments with enhanced visuals
     const wheelSegments = [
-      { label: "💥 JACKPOT x10", multiplier: 10, probability: 0.05, color: "#FFD700" },
-      { label: "🎉 BIG WIN x5", multiplier: 5, probability: 0.1, color: "#FF6347" },
-      { label: "🔥 WIN x3", multiplier: 3, probability: 0.15, color: "#FF4500" },
-      { label: "👍 WIN x2", multiplier: 2, probability: 0.2, color: "#32CD32" },
-      { label: "✨ SMALL WIN x1.5", multiplier: 1.5, probability: 0.2, color: "#1E90FF" },
-      { label: "😐 NO WIN x0", multiplier: 0, probability: 0.15, color: "#A9A9A9" },
-      { label: "😞 LOSE HALF", multiplier: -0.5, probability: 0.1, color: "#696969" },
-      { label: "💸 BANKRUPT", multiplier: -1, probability: 0.05, color: "#8B0000" }
+      { label: "💥 ᴊᴀᴄᴋᴘᴏᴛ x10", multiplier: 10, probability: 0.05, color: "#FFD700" },
+      { label: "🎉 ʙɪɢ ᴡɪɴ x5", multiplier: 5, probability: 0.1, color: "#FF6347" },
+      { label: "🔥 ᴡɪɴ x3", multiplier: 3, probability: 0.15, color: "#FF4500" },
+      { label: "👍 ᴡɪɴ x2", multiplier: 2, probability: 0.2, color: "#32CD32" },
+      { label: "✨ sᴍᴀʟʟ ᴡɪɴ x1.5", multiplier: 1.5, probability: 0.2, color: "#1E90FF" },
+      { label: "😐 ɴᴏ ᴡɪɴ x0", multiplier: 0, probability: 0.15, color: "#A9A9A9" },
+      { label: "😞 ʟᴏsᴇ ʜᴀʟғ", multiplier: -0.5, probability: 0.1, color: "#696969" },
+      { label: "💸 ʙᴀɴᴋʀᴜᴘᴛ", multiplier: -1, probability: 0.05, color: "#8B0000" }
     ];
 
-    // Send initial spinning message (edit 1)
+    // Send initial spinning message
     let spinningMsg;
     try {
       spinningMsg = await api.sendMessage("🎡 | Preparing wheel...", threadID);
@@ -123,7 +136,7 @@ module.exports = {
       return;
     }
 
-    // Simulate spinning with minimal edits (edits 2-4)
+    // Simulate spinning with minimal edits
     const spinMessages = [
       "🎡 | Spinning /",
       "🪅 | Spinning -",
@@ -191,38 +204,37 @@ module.exports = {
     
     await usersData.set(senderID, updateData);
 
-    // Build result message with enhanced formatting (final edit - edit 5)
+    // Build result message with fancy font
     const resultMsg = [
-      `🎡 ━━ FINAL RESULT ━━ 🎡`,
+      `🎡 ━━ ғɪɴᴀʟ ʀᴇsᴜʟᴛ ━━ 🎡`,
       ``,
-        `▢ ${result.label}`,
-        `▢ YOUR BET: ${bet.toLocaleString()}`,
+      `▢ ${result.label.replace(/\d/g, d => toFancyNumber(parseInt(d)))}`,
+      `▢ ʏᴏᴜʀ ʙᴇᴛ: ${formatFancyNumber(bet)}`,
       winnings > 0 
-      ? `▢ 🎉 YOU WON: +${winnings.toLocaleString()}`
-      : winnings < 0
-      ? `▢ 💸 YOU LOST: ${Math.abs(winnings).toLocaleString()}`
-      : `▢ 😔 NO WINNINGS`,
+        ? `▢ 🎉 ʏᴏᴜ ᴡᴏɴ: +${formatFancyNumber(winnings)}`
+        : winnings < 0
+          ? `▢ 💸 ʏᴏᴜ ʟᴏsᴛ: ${formatFancyNumber(Math.abs(winnings))}`
+          : `▢ 😔 ɴᴏ ᴡɪɴɴɪɴɢs`,
       ``,
-     
-      `▢ NEW BALANCE: ${finalMoney.toLocaleString()}`,
-      `▢ SPINS USED: ${validSpins.length}/${MAX_PLAYS}`,
-      consecutiveBonus > 0 ? `▢ CONSECUTIVE DAY BONUS: +${(consecutiveBonus * 100).toFixed(0)}%` : '',
-      isLuckyHour ? `▢ 🍀 LUCKY HOUR BONUS: +50%` : '',
+      `▢ ɴᴇᴡ ʙᴀʟᴀɴᴄᴇ: ${formatFancyNumber(finalMoney)}`,
+      `▢ sᴘɪɴs ᴜsᴇᴅ: ${formatFancyNumber(validSpins.length)}/${formatFancyNumber(MAX_PLAYS)}`,
+      consecutiveBonus > 0 ? `▢ ᴄᴏɴsᴇᴄᴜᴛɪᴠᴇ ᴅᴀʏ ʙᴏɴᴜs: +${formatFancyNumber(Math.round(consecutiveBonus * 100))}%` : '',
+      isLuckyHour ? `▢ 🍀 ʟᴜᴄᴋʏ ʜᴏᴜʀ ʙᴏɴᴜs: +50%` : '',
       ``,
-      `💎 Consecutive days: ${consecutiveDays} | Big wins: ${updateData.data.bigWins || 0}`
+      `💎 ᴄᴏɴsᴇᴄᴜᴛɪᴠᴇ ᴅᴀʏs: ${formatFancyNumber(consecutiveDays)} | ʙɪɢ ᴡɪɴs: ${formatFancyNumber(updateData.data.bigWins || 0)}`
     ].filter(line => line !== '').join("\n");
 
     try {
       await api.editMessage(resultMsg, spinningMsg.messageID);
       
-      // Special effects for big wins (new messages, not edits)
+      // Special effects for big wins
       if (finalMultiplier >= 5) {
         await new Promise(resolve => setTimeout(resolve, 1000));
-        await api.sendMessage("🎊 CONGRATULATIONS ON YOUR BIG WIN! 🎊", threadID);
+        await api.sendMessage("🎊 ᴄᴏɴɢʀᴀᴛᴜʟᴀᴛɪᴏɴs ᴏɴ ʏᴏᴜʀ ʙɪɢ ᴡɪɴ! 🎊", threadID);
         
         if (finalMultiplier >= 10) {
           await new Promise(resolve => setTimeout(resolve, 1500));
-          await api.sendMessage("🏆 JACKPOT WINNER! 🏆", threadID);
+          await api.sendMessage("🏆 ᴊᴀᴄᴋᴘᴏᴛ ᴡɪɴɴᴇʀ! 🏆", threadID);
         }
       }
     } catch (e) {
@@ -238,17 +250,28 @@ async function showStats(api, event, usersData) {
   const user = await usersData.get(senderID);
   const userData = user.data || {};
   
+  function toFancyNumber(num) {
+    const superscripts = ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹'];
+    return num.toString().split('').map(digit => 
+      superscripts[parseInt(digit)] || digit
+    ).join('');
+  }
+  
+  function formatFancyNumber(num) {
+    return toFancyNumber(num.toLocaleString());
+  }
+  
   const statsMessage = [
-    "🎡 ━━━ YOUR STATS ━━━ 🎡",
-   
-    `▢ Total spins: ${userData.totalSpins | 0}`,
-    `▢ Big wins (5x+): ${userData.bigWins || 0}`,
-    `▢ Jackpots: ${userData.jackpots || 0}`,
-    `▢ Total winnings: ${(userData.totalWinnings || 0).toLocaleString()}`,
-    `▢ Current balance: ${user.money.toLocaleString()}`,
-    `▢ Consecutive days: ${userData.consecutiveDays || 0}`,
+    "🎡 ━━━ ʏᴏᴜʀ sᴛᴀᴛs ━━━ 🎡",
+    ``,
+    `▢ ᴛᴏᴛᴀʟ sᴘɪɴs: ${formatFancyNumber(userData.totalSpins || 0)}`,
+    `▢ ʙɪɢ ᴡɪɴs (5x+): ${formatFancyNumber(userData.bigWins || 0)}`,
+    `▢ ᴊᴀᴄᴋᴘᴏᴛs: ${formatFancyNumber(userData.jackpots || 0)}`,
+    `▢ ᴛᴏᴛᴀʟ ᴡɪɴɴɪɴɢs: ${formatFancyNumber(userData.totalWinnings || 0)}`,
+    `▢ ᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ: ${formatFancyNumber(user.money)}`,
+    `▢ ᴄᴏɴsᴇᴄᴜᴛɪᴠᴇ ᴅᴀʏs: ${formatFancyNumber(userData.consecutiveDays || 0)}`,
     "",
-    "💡 Tip: Play during lucky hours (6PM-8PM) for bonus rewards!"
+    "💡 ᴛɪᴘ: Play during lucky hours (6PM-8PM) for bonus rewards!"
   ].join("\n");
   
   return api.sendMessage(statsMessage, threadID);
@@ -259,19 +282,33 @@ async function showLeaderboard(api, event, usersData) {
   const { threadID } = event;
   const allUsers = await usersData.getAll();
   
+  function toFancyNumber(num) {
+    const superscripts = ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹'];
+    return num.toString().split('').map(digit => 
+      superscripts[parseInt(digit)] || digit
+    ).join('');
+  }
+  
+  function formatFancyNumber(num) {
+    return toFancyNumber(num.toLocaleString());
+  }
+  
   // Filter users with wheel stats and sort by total winnings
   const wheelPlayers = allUsers.filter(user => user.data?.totalWinnings)
                               .sort((a, b) => (b.data.totalWinnings || 0) - (a.data.totalWinnings || 0))
                               .slice(0, 10);
   
-  let leaderboardMessage = "🏆 ━━━ WHEEL LEADERBOARD ━━━ 🏆\n\n";
+  let leaderboardMessage = [
+    "🏆 ━━━ ᴡʜᴇᴇʟ ʟᴇᴀᴅᴇʀʙᴏᴀʀᴅ ━━━ 🏆",
+    ``
+  ].join("\n");
   
   if (wheelPlayers.length === 0) {
-    leaderboardMessage += "No players yet! Be the first to spin the wheel!";
+    leaderboardMessage += "ɴᴏ ᴘʟᴀʏᴇʀs ʏᴇᴛ! ʙᴇ ᴛʜᴇ ғɪʀsᴛ ᴛᴏ sᴘɪɴ ᴛʜᴇ ᴡʜᴇᴇʟ!";
   } else {
     wheelPlayers.forEach((user, index) => {
-      const rank = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index + 1}.`;
-      leaderboardMessage += `${rank} ${user.name || `User${user.id}`}: ${(user.data.totalWinnings || 0).toLocaleString()}\n`;
+      const rank = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${formatFancyNumber(index + 1)}.`;
+      leaderboardMessage += `${rank} ${user.name || `ᴜsᴇʀ${user.id}`}: ${formatFancyNumber(user.data.totalWinnings || 0)}\n`;
     });
   }
   
@@ -286,10 +323,21 @@ async function claimDailyBonus(api, event, usersData) {
   const now = Date.now();
   const lastDaily = userData.lastDaily || 0;
   
+  function toFancyNumber(num) {
+    const superscripts = ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹'];
+    return num.toString().split('').map(digit => 
+      superscripts[parseInt(digit)] || digit
+    ).join('');
+  }
+  
+  function formatFancyNumber(num) {
+    return toFancyNumber(num.toLocaleString());
+  }
+  
   // Check if already claimed daily bonus today
   if (now - lastDaily < 86400000) {
     const nextClaim = Math.ceil((86400000 - (now - lastDaily)) / 3600000);
-    return api.sendMessage(`⏰ You've already claimed your daily bonus today. n/Come back in ${nextClaim} hours!`, threadID);
+    return api.sendMessage(`⏰ ʏᴏᴜ'ᴠᴇ ᴀʟʀᴇᴀᴅʏ ᴄʟᴀɪᴍᴇᴅ ʏᴏᴜʀ ᴅᴀɪʟʏ ʙᴏɴᴜs ᴛᴏᴅᴀʏ. ᴄᴏᴍᴇ ʙᴀᴄᴋ ɪɴ ${formatFancyNumber(nextClaim)} ʜᴏᴜʀs!`, threadID);
   }
   
   // Calculate daily bonus based on consecutive days
@@ -310,15 +358,15 @@ async function claimDailyBonus(api, event, usersData) {
   });
   
   const bonusMessage = [
-    "🎁 ━━ DAILY BONUS ━━ 🎁",
+    "🎁 ━━ ᴅᴀɪʟʏ ʙᴏɴᴜs ━━ 🎁",
     "",
-    `▢ Base bonus: ${baseBonus.toLocaleString()}`,
-    `▢ Streak bonus (${consecutiveDays} days): ${streakBonus.toLocaleString()}`,
-    `▢ Total received: ${dailyBonus.toLocaleString()}`,
-    `▢ New balance: ${updatedMoney.toLocaleString()}`,
+    `▢ ʙᴀsᴇ ʙᴏɴᴜs: ${(baseBonus)}`,
+    `▢ sᴛʀᴇᴀᴋ ʙᴏɴᴜs (${(consecutiveDays)} ᴅᴀʏs): ${formatFancyNumber(streakBonus)}`,
+    `▢ ᴛᴏᴛᴀʟ ʀᴇᴄᴇɪᴠᴇᴅ: ${(dailyBonus)}`,
+    `▢ ɴᴇᴡ ʙᴀʟᴀɴᴄᴇ: ${(updatedMoney)}`,
     "",
-    `💎 Come back tomorrow for your next bonus!`
+    `💎 ᴄᴏᴍᴇ ʙᴀᴄᴋ ᴛᴏᴍᴏʀʀᴏᴡ ғᴏʀ ʏᴏᴜʀ ɴᴇxᴛ ʙᴏɴᴜs!`
   ].join("\n");
   
   return api.sendMessage(bonusMessage, threadID);
-  }
+    }
