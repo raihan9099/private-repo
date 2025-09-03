@@ -13,11 +13,11 @@ module.exports = {
 
 	langs: {
 		vi: {
-			unauthorizedGroup: "Nhóm của bạn chưa được ủy quyền. Để được ủy quyền, vui lòng tham gia nhóm hỗ trợ tại: m.me/hydrocarbonn\user ID: %1",
+			unauthorizedGroup: "Nhóm của bạn chưa được ủy quyền. Để được ủy quyền, vui lòng tham gia nhóm hỗ trợ tại: https://m.me/j/AbYP0EG_FgmtmJ99/\nGroup TID: %1",
 			leftGroup: "Bot đã rời khỏi nhóm chưa được ủy quyền: %1 (TID: %2)"
 		},
 		en: {
-			unauthorizedGroup: "Your group is unauthorized. To get authorization, please Contact admin!",
+			unauthorizedGroup: "Your group is unauthorized. To get authorization, please join the support group by -supportgc command!",
 			leftGroup: "Bot left unauthorized group: %1 (TID: %2)"
 		}
 	},
