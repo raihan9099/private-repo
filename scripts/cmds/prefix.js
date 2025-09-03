@@ -6,11 +6,11 @@ module.exports = {
   config: {
     name: "prefix",
     version: "1.5",
-    author: "Raihan",
+    author: "RaiHan",
     countDown: 5,
     role: 0,
     description: "Change the bot prefix in your chat box or globally (admin only)",
-    category: "⚙️ Configuration",
+    category: "⚙ Configuration",
     guide: {
       en:
         "┌─『 Prefix Settings 』─┐\n"
@@ -23,7 +23,7 @@ module.exports = {
       + "│     Set global prefix (Admin only)\n"
       + "│     Example: {pn} $ -g\n"
       + "│\n"
-      + "│ ♻️ {pn} reset\n"
+      + "│ ♻ {pn} reset\n"
       + "│     Reset to default prefix\n"
       + "│\n"
       + "└──────────────────────┘"
@@ -42,11 +42,11 @@ module.exports = {
       + "└──────────────────────────┘",
       confirmGlobal:
         "┌─『 Global Prefix Change 』─┐\n"
-      + "│ ⚙️ React to confirm global prefix update.\n"
+      + "│ ⚙ React to confirm global prefix update.\n"
       + "└────────────────────────────┘",
       confirmThisThread:
         "┌─『 Chat Prefix Change 』─┐\n"
-      + "│ ⚙️ React to confirm this chat's prefix update.\n"
+      + "│ ⚙ React to confirm this chat's prefix update.\n"
       + "└──────────────────────────┘",
       successGlobal:
         "┌─『 Prefix Updated 』─┐\n"
@@ -59,7 +59,7 @@ module.exports = {
       myPrefix:
         "┌─『 Current Prefix 』─┐\n"
       + `│ 🌍 Global: %1\n`
-      + `│ 💬 This Chat: %2\n`
+      + "│ 💬 This Chat: %2\n"
       + "│\n"
       + `│ ➤ Type: ${2}help\n`
       + "└─────────────────────┘"
@@ -107,9 +107,10 @@ module.exports = {
     return message.reply(getLang("successThisThread", newPrefix));
   },
 
-  onChat: async function ({ event, message, threadsData }) {
+  onChat: async function ({ event, message, threadsData, usersData }) {
     const globalPrefix = global.GoatBot.config.prefix;
     const threadPrefix = await threadsData.get(event.threadID, "data.prefix") || globalPrefix;
+    const userName = await usersData.getName(event.senderID);
 
     if (event.body && event.body.toLowerCase() === "prefix") {
       const currentTime = moment().tz("Asia/Dhaka").format("hh:mm A");
@@ -124,19 +125,63 @@ module.exports = {
 
       const uptime = formatUptime(uptimeMs);
 
-      return message.reply({
-        body:
-`➤➤➤ 𝗣𝗥𝗘𝗙𝗜𝗫 𝗜𝗡𝗙𝗢 ➤➤➤
-ꫝ. 🌍 Global: ${globalPrefix}
-ꫝ. 💬 Chat: ${threadPrefix}
-ꫝ. 📘 Help: ${threadPrefix}help
-ꫝ. ⏰ Time: ${currentTime}
-ꫝ. ⏳ Uptime: ${uptime}
-ꫝ. 👤 Your ID: ${event.senderID}
-ꫝ. ✍️ Dev: RaiHanツ모
-➤➤➤➤➤➤➤➤➤➤➤➤➤`,
-        attachment: await utils.getStreamFromURL("https://drive.google.com/uc?export=view&id=1LWrlzPLaClLNLZjsJMR46lmADae9CPdY")
-      });
+      // Random stylish opening lines
+      const RandomReply = [
+        "Hey ${userName}, do u call for my prefix? 😏",
+        "Yo ${userName}! looking for my prefix huh? 🚀",
+        "Hola ${userName}, u wanna see my prefix? 🌐",
+        "Oi ${userName}, prefix hunter spotted! 👀",
+        "Welcome back ${userName}, prefix is waiting... 🔑",
+        "Heya ${userName}, wanna play with my prefix? 🎮",
+        "Sup ${userName}? here comes the prefix ⚡",
+        "Dear ${userName}, your prefix request is served 🍽️",
+        "Hello ${userName}, u just unlocked prefix mode 🔓",
+        "Yo fam ${userName}, prefix incoming 📡",
+        "Greetings ${userName}, prefix detected 🛰️",
+        "Hey ${userName}, prefix vibes on the way 🎶",
+        "Boss ${userName}, here’s ur prefix 👑",
+        "Yo legend ${userName}, prefix is yours 🔥",
+        "Hey ${userName}, u just whispered \"prefix\"? 🤫",
+        "Look who’s here, ${userName}! prefix time ⏳",
+        "Hey ${userName}, wanna flex with my prefix? 💎",
+        "Holla ${userName}, prefix unlocked 🎯",
+        "Yo ${userName}, prefix generator activated ⚙️",
+        "Hehe ${userName}, caught u asking for prefix 😉",
+        "✨ Hey ${userName}, I heard you whispering for my prefix…",
+        "🌙 ${userName}, the stars told me you need my prefix!",
+        "👑 My lord ${userName}, your prefix awaits…",
+        "🌸 ${userName}, the winds carry your call for prefix.",
+        "⚡ Hey ${userName}, your energy just summoned my prefix!",
+        "🌹 Beloved ${userName}, here’s the prefix you seek.",
+        "🔥 ${userName}, your vibe just unlocked my prefix!",
+        "💎 ${userName}, only gems like you get this prefix…",
+        "🌐 Hey ${userName}, ready to rule with my prefix?",
+        "☁️ ${userName}, from clouds to you, prefix delivered.",
+        "🎭 ${userName}, destiny called, prefix answered.",
+        "🦋 Hey ${userName}, like a butterfly, prefix landed to you.",
+        "🌟 ${userName}, stars align when you call my prefix.",
+        "🕊️ Hey ${userName}, peace and prefix come together now.",
+        "🔥 ${userName}, warriors like you deserve this prefix.",
+        "👑 Bow down ${userName}, the royal prefix is here.",
+        "💫 ${userName}, magic just spelled out my prefix for you.",
+        "🌊 ${userName}, waves brought your prefix ashore.",
+        "🌞 Hey ${userName}, like sunshine, here’s your prefix.",
+        "🌌 ${userName}, galaxies opened up for your prefix."
+      ];
+
+      const randomIndex = Math.floor(Math.random() * RandomReply.length);
+      const prefixMessage = RandomReply[randomIndex].replace("${userName}", userName);
+
+      return message.reply(
+`${prefixMessage}
+
+╭❂🌐❂╮  ɢʟᴏʙᴀʟ ᴘʀᴇꜰɪx: ${globalPrefix}
+╰❂🛸❂╯  ʏᴏᴜʀ ʙᴏx: ${threadPrefix}
+╭❂📘❂╮  ᴄᴍɴᴅ ᴍᴇɴᴜ: ${threadPrefix}help
+╰❂⏰❂╯  ᴛɪᴍᴇ: ${currentTime}
+╭❂⏳❂╮  ᴜᴘᴛɪᴍᴇ: ${uptime}
+╰❂👑❂╯  ᴅᴇᴠ: RaiHan`
+      );
     }
   }
 };
