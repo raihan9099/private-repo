@@ -73,8 +73,8 @@ function fillHexStat(ctx, x, y, label, value, labelColor, valueColor, labelFont,
 
 module.exports = {
     config: {
-        name: 'cpanel',
-        aliases: ['Panel'],
+        name: 'cpannel',
+        aliases: ['Pannel'],
         version: '6.7',
         author: 'Mahi--',
         countDown: 10,
