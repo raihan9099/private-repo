@@ -194,7 +194,7 @@ module.exports = {
                 ctx.fillText("Anchestor", centerX, centerY - 15);
                 ctx.fillStyle = textColor;
                 ctx.font = '16px Arial';
-                ctx.fillText("By💀RaiHan", centerX, centerY + 22);
+                ctx.fillText("By 💀 RaiHan", centerX, centerY + 22);
 
                 const now = new Date();
                 const dateString = `${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
