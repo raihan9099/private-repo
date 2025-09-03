@@ -29,12 +29,13 @@ module.exports = {
                         multiple1: "you",
                         multiple2: "y'll",
                         defaultWelcomeMessage:
-`Assalamualaikum,{userNameTag}
+`Assalamualaikum
+{userNameTag} 🍂✨
 
 𝘸ᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛʜᴇ {threadName} 𝘤ʜᴀᴛ ɢʀᴏᴜᴘ 😊
 
- 𝘱ʟᴇᴀsᴇ ʙᴇ ᴋɪɴᴅ ᴛᴏ ᴇᴠᴇʀʏᴏɴᴇ, ᴀɴᴅ ᴀᴠᴏɪᴅ sᴘᴀᴍ ᴏʀ ʜᴀʀᴍғᴜʟ ʟɪɴᴋs.
-
+ 𝘱ʟᴇᴀsᴇ ʙᴇ ᴋɪɴᴅ ᴛᴏ ᴇᴠᴇʀʏᴏɴᴇ, 
+ ᴀɴᴅ ᴀᴠᴏɪᴅ sᴘᴀᴍ ᴏʀ ʜᴀʀᴍғᴜʟ ʟɪɴᴋs.
 🌻🤍 ʜᴀᴠᴇ ᴀ ʙʀɪɢʜᴛ {session}!`
                 }
         },
