@@ -10,8 +10,8 @@ function formatBytes(bytes) {
 
 module.exports = {
   config: {
-    name: "uptime",
-    aliases: ["up", "upt"],
+    name: "uptime3",
+    aliases: ["up3", "upt3"],
     version: "1.2",
     author: "nexo_here",
     shortDescription: "Show bot status & uptime",
