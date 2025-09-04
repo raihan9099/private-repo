@@ -1,7 +1,7 @@
 const { getPrefix } = global.utils;
 const { commands, aliases } = global.GoatBot;
 
-// ------------------- Fonts embedded directly -------------------
+// ------------------- Fonts -------------------
 // Category font (bold/full-width)
 const categoryFont = {
   A:"𝗔",B:"𝗕",C:"𝗖",D:"𝗗",E:"𝗘",F:"𝗙",G:"𝗚",H:"𝗛",I:"𝗜",J:"𝗝",
@@ -38,7 +38,7 @@ const categoryEmojis = {
 module.exports = {
   config: {
     name: "help",
-    version: "2.1",
+    version: "2.4",
     author: "Ew’r Saim",
     countDown: 5,
     role: 0,
@@ -53,7 +53,6 @@ module.exports = {
     const { threadID } = event;
     const prefix = getPrefix(threadID);
     const categories = {};
-
     const applyFont = (text, map) => [...text].map(ch => map[ch] || ch).join("");
 
     // Categorize commands
@@ -65,19 +64,28 @@ module.exports = {
       categories[catName].push(name);
     }
 
-    // If no arguments, list all categories with commands
+    // Sorting logic
+    const sortedCats = Object.keys(categories).sort((a, b) => {
+      if(a === "OWNER") return -1;   // OWNER always on top
+      if(b === "OWNER") return 1;
+      const lenA = categories[a].length;
+      const lenB = categories[b].length;
+      if(lenA === 1 && lenB !== 1) return -1;
+      if(lenB === 1 && lenA !== 1) return 1;
+      return lenA - lenB; // More commands -> lower
+    });
+
     if (!args.length) {
       let msg = "━━━━━━━━━━━━━━\n";
-      msg += "𝘈𝘷𝘢𝘪𝘭𝘢𝘣𝘭𝘦 𝘊𝘰𝘮𝘮𝘢𝘯𝘥𝘴:\n";
+      msg += "𝘈𝘷𝘢𝘪𝘭𝘢𝘣𝘭𝘦 𝘊𝘰𝘮𝘮ᴀ𝗻𝗱𝘀:\n";
 
-      const sortedCats = Object.keys(categories).sort();
       for (const cat of sortedCats) {
         const cmdList = categories[cat].sort((a,b) => a.localeCompare(b));
         const emojiPrefix = categoryEmojis[cat] || "";
         const styledCat = applyFont(cat, categoryFont);
 
         msg += "╭─╼━━━━━━━━╾─╮\n";
-        msg += `│ ${styledCat}\n`;
+        msg += `│ ${emojiPrefix}${styledCat}\n`;
         for (const cmdName of cmdList) {
           msg += `│ ⤜ ${applyFont(cmdName, commandFont)}\n`;
         }
@@ -95,7 +103,7 @@ module.exports = {
       return message.reply(msg);
     }
 
-    // Show individual command info
+    // Individual command info
     const input = args[0].toLowerCase();
     const command = commands.get(input) || commands.get(aliases.get(input));
     if (!command || !command.config) {
