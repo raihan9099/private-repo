@@ -4,13 +4,13 @@ const { createCanvas } = require("canvas");
 
 module.exports = {
   config: {
-    name: "uptime3",
+    name: "uptime2",
     aliases: ["up2", "upt2", "stats", "milowstatus"],
     version: "4.0",
     author: "nexo_here",
     cooldowns: 5,
     role: 0,
-    shortDescription: "Ichigo AI System Status",
+    shortDescription: "milow AI System Status",
     longDescription: "Display futuristic system metrics for Ichigo AI",
     category: "system",
     guide: "{pn}"
