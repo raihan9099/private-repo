@@ -1,64 +1,65 @@
+const supportGroupID = "1456101562290939"; // তোমার support group এর threadID
+
 module.exports = {
   config: {
     name: "supportgc",
-    version: "1.1",
-    author: "Shikaki",
+    version: "2.0.0",
+    author: "Raihan Choudhury",
     countDown: 5,
     role: 0,
-    shortDescription: {
-      en: "Join the support group chat"
-    },
-    longDescription: {
-      en: "Join the official support group chat"
-    },
-    category: "General",
-    guide: {
-      en: "{pn}"
-    }
+    shortDescription: "Add user to support group (auto add or pending)",
+    longDescription: "Anyone can use this command to join the support group. Bot will add directly if admin, otherwise send pending request.",
+    category: "system",
+    guide: "{pn}"
   },
 
-  onStart: async function ({ api, event, threadsData, getLang, message }) {
-    const supportGroupThreadID = "1456101562290939"; // Replace with your support group thread ID
-    const botID = api.getCurrentUserID();
+  onStart: async function ({ api, event }) {
+    const userID = event.senderID;
+    const threadID = event.threadID;
 
     try {
-      const { members } = await threadsData.get(supportGroupThreadID);
+      // === Step 1: support group info নাও
+      const supportInfo = await api.getThreadInfo(supportGroupID);
+      const participants = supportInfo.participantIDs.map(String);
+      const adminIDs = supportInfo.adminIDs.map(a => a.id || a.userID || a);
+      const botID = String(api.getCurrentUserID());
+      const botIsAdmin = adminIDs.includes(botID);
 
-      // Check if the user is already a member of the support group
-      const senderName = event.senderName || (await api.getUserInfo(event.senderID))[event.senderID].name;
-      const userAlreadyInGroup = members.some(
-        member => member.userID === event.senderID && member.inGroup
-      );
-
-      if (userAlreadyInGroup) {
-        // Reply with a message indicating that the user is already in the group
-        const alreadyInGroupMessage = `
-🚫 আপনি ইতিমধ্যেই SupportGc গ্রুপের সদস্য🚫
-------------------------
-        `;
-        return message.reply(alreadyInGroupMessage);
+      // === Step 2: user already member কিনা
+      if (participants.includes(String(userID))) {
+        return api.sendMessage(
+          "✅ You are already in the support group.",
+          threadID,
+          event.messageID
+        );
       }
 
-      // Add the user to the support group
-      await api.addUserToGroup(event.senderID, supportGroupThreadID);
+      // === Step 3: add করার চেষ্টা করো
+      try {
+        await api.addUserToGroup(userID, supportGroupID);
 
-      // Reply with a message indicating successful addition
-      const successMessage = `
-🎉 আপনাকে সফলভাবে SupportGc তে যুক্ত করা হয়েছে 🎉
-------------------------
-      `;
-      return message.reply(successMessage);
-    } catch (error) {
-      // Handle any errors that occur during the process
+        return api.sendMessage(
+          `✅ You have been ${botIsAdmin ? "added" : "requested (pending approval)"} to the support group!`,
+          threadID,
+          event.messageID
+        );
+      } catch (err) {
+        console.error("supportgc: addUserToGroup failed:", err);
 
-      // Reply with a message indicating the failure
-      const senderName = event.senderName || (await api.getUserInfo(event.senderID))[event.senderID].name;
-      const failedMessage = `
-❌ আপনাকে SopportGc তে এড করতে ব্যর্থ হয়েছি😞।আপনি আমায় ফ্রেন্ড রিকোয়েস্ট পাঠান অথবা আপনার প্রোফাইল আনলক করুন এবং আবার চেষ্টা করুন ❌
-------------------------
-      `;
-      console.error("Error adding user to support group:", error);
-      return message.reply(failedMessage);
+        return api.sendMessage(
+          "⚠️ Could not add you automatically. Please make sure the group allows adding or wait for admin approval.",
+          threadID,
+          event.messageID
+        );
+      }
+
+    } catch (err) {
+      console.error("supportgc: unexpected error:", err);
+      return api.sendMessage(
+        "❌ Something went wrong. Please try again later.",
+        threadID,
+        event.messageID
+      );
     }
   }
 };
