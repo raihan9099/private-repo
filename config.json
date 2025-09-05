@@ -9,24 +9,22 @@
     "intervalGetNewCookie": 1440,
     "notes": "time the system automatically retrieves new cookies from email/password, unit is minute, if you set null, the system will not automatically retrieve new cookies, it saves you from having to manually change your cookie every time it expires. recommended set to 1440 (1day) or 4320 (3day).TO BE ABLE TO USE THIS FEATURE YOU NEED TO ENTER THE ACCOUNT PASSWORD ABOVE"
   },
-  "antiInbox": true,
+  "antiInbox": false,
   "language": "en",
   "notesLanguage": "change to your language with ISO 639-1 code, available languages: vi (Vietnamese), en (English)",
-  "nickNameBot": "‌:> yours milow 🩷🐰",
+  "nickNameBot": "‌:> 𝗛𝗼𝗻𝗲𝘆 𝗕𝘂𝗻𝗻𝘆 🩷🐇",
   "prefix": "-",
   "adminOnly": {
     "enable": false,
     "ignoreCommand": []
   },
   "adminBot": [
-    "100084228500089",
-    "61550614250757"
+    "100084228500089"
   ],
   "whiteListMode": {
     "enable": false,
     "whiteListIds": [
-      "100084228500089",
-      "61550614250757"
+      "100084228500089"
     ],
     "notes": "if you enable this feature, only the ids in the whiteListIds list can use the bot"
   },
@@ -46,8 +44,8 @@
   "timeZone": "Asia/Dhaka",
   "credentials": {
     "gmailAccount": {
-      "email": "bd2946430@gmail.com",
-      "clientId": "1//04nBMNYnfbedsCgYIARAAGAQSNwF-L9IrmyZIKKZaDmN9aqXhIuO1wxk2jpkXPf3zuL_KN-IU99BNhW7eUGCFrDr0hJetNkBFExg",
+      "email": "botofnexxo@gmail.com",
+      "clientId": "848792512039-g3mlfd39p9ttu82ga4kahk6kadjr0hcp.apps.googleusercontent.com",
       "clientSecret": "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",
       "refreshToken": "1//04nBMNYnfbedsCgYIARAAGAQSNwF-L9IrmyZIKKZaDmN9aqXhIuO1wxk2jpkXPf3zuL_KN-IU99BNhW7eUGCFrDr0hJetNkBFExg",
       "apiKey": ""
@@ -82,7 +80,7 @@
     "notes": "the value of timeInterval is seconds, url is the url you want to send the request to (automatically detected for hosting glitch or replit)"
   },
   "autoLoadScripts": {
-    "enable": false,
+    "enable": true,
     "ignoreCmds": "",
     "ignoreEvents": "",
     "notes": "this feature will automatically load the script when scripts have been changed, you can set ignoreCmds to ignore commands, ignoreEvents to ignore events, separate by comma or space, example: \"cmd1.js cmd2.js cmd3.js\" (without backslash)"
@@ -132,7 +130,7 @@
     "message_unsend": true,
     "message_reply": true,
     "event": true,
-    "read_receipt": false,
+    "read_receipt": true,
     "typ": false,
     "presence": false
   },
@@ -148,4 +146,4 @@
     "autoReconnect": false,
     "notes": "Document here: https://github.com/ntkhang03/fb-chat-api/blob/master/DOCS.md#apisetoptionsoptions "
   }
-}
+    }
