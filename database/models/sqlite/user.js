@@ -1,6 +1,6 @@
 module.exports = function (sequelize) {
 	const { Model, DataTypes } = require("sequelize");
-	class userModel extends Model { }
+	class userModel extends Model { } // by ShAn
 	userModel.init({
 		userID: {
 			type: DataTypes.STRING,

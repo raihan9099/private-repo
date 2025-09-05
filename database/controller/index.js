@@ -4,7 +4,7 @@ const { log, getText } = global.utils;
 const { config } = global.GoatBot;
 const databaseType = config.database.type;
 
-// with add null if not found data
+// with add null if not found data 
 function fakeGraphql(query, data, obj = {}) {
 	if (typeof query != "string" && typeof query != "object")
 		throw new Error(`The "query" argument must be of type string or object, got ${typeof query}`);
@@ -24,7 +24,7 @@ function fakeGraphql(query, data, obj = {}) {
 			obj[key] = data.hasOwnProperty(key) ? data[key] : null;
 	}
 	return obj;
-	// i don't know why but it's working by Copilot suggestion :)
+	// i don't know why but it's working by Copilot suggestion :) by ShAn
 }
 
 module.exports = async function (api) {
