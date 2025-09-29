@@ -8,7 +8,13 @@
  * ! Please do not change the below code, it is very important for the project.
  * It is my motivation to maintain and develop the project for free.
  * ! If you change it, you will be banned forever
- * Thank you for using.
+ * Thank you for using
+ *
+ * Vietnamese:
+ * ! Vui lòng không thay đổi mã bên dưới, nó rất quan trọng đối với dự án.
+ * Nó là động lực để tôi duy trì và phát triển dự án miễn phí.
+ * ! Nếu thay đổi nó, bạn sẽ bị cấm vĩnh viễn
+ * Cảm ơn bạn đã sử dụng
  */
 
 process.on('unhandledRejection', error => console.log(error));
@@ -16,7 +22,6 @@ process.on('uncaughtException', error => console.log(error));
 
 const axios = require("axios");
 const fs = require("fs-extra");
-const google = require("googleapis").google;
 const nodemailer = require("nodemailer");
 const { execSync } = require('child_process');
 const log = require('./logger/log.js');
@@ -55,8 +60,20 @@ for (const pathDir of [dirConfig, dirConfigCommands]) {
 	}
 }
 const config = require(dirConfig);
+// Safety checks for config properties
 if (config.whiteListMode?.whiteListIds && Array.isArray(config.whiteListMode.whiteListIds))
 	config.whiteListMode.whiteListIds = config.whiteListMode.whiteListIds.map(id => id.toString());
+
+// Ensure adminBot is always an array
+if (!Array.isArray(config.adminBot)) {
+	config.adminBot = [];
+}
+
+// Ensure database config exists
+if (!config.database) {
+	config.database = { type: "sqlite" };
+}
+
 const configCommands = require(dirConfigCommands);
 
 global.GoatBot = {
@@ -211,86 +228,6 @@ if (config.autoRestart) {
 }
 
 (async () => {
-	// ———————————————— SETUP MAIL ———————————————— //
-	const { gmailAccount } = config.credentials;
-	const { email, clientId, clientSecret, refreshToken } = gmailAccount;
-	const OAuth2 = google.auth.OAuth2;
-	const OAuth2_client = new OAuth2(clientId, clientSecret);
-	OAuth2_client.setCredentials({ refresh_token: refreshToken });
-	let accessToken;
-	try {
-		accessToken = await OAuth2_client.getAccessToken();
-	}
-	catch (err) {
-		throw new Error(getText("Goat", "googleApiTokenExpired"));
-	}
-	const transporter = nodemailer.createTransport({
-		host: 'smtp.gmail.com',
-		service: 'Gmail',
-		auth: {
-			type: 'OAuth2',
-			user: email,
-			clientId,
-			clientSecret,
-			refreshToken,
-			accessToken
-		}
-	});
-
-	async function sendMail({ to, subject, text, html, attachments }) {
-		const transporter = nodemailer.createTransport({
-			host: 'smtp.gmail.com',
-			service: 'Gmail',
-			auth: {
-				type: 'OAuth2',
-				user: email,
-				clientId,
-				clientSecret,
-				refreshToken,
-				accessToken
-			}
-		});
-		const mailOptions = {
-			from: email,
-			to,
-			subject,
-			text,
-			html,
-			attachments
-		};
-		const info = await transporter.sendMail(mailOptions);
-		return info;
-	}
-
-	global.utils.sendMail = sendMail;
-	global.utils.transporter = transporter;
-
-	// ———————————————— CHECK VERSION ———————————————— //
-	const { data: { version } } = await axios.get("https://raw.githubusercontent.com/ntkhang03/Goat-Bot-V2/main/package.json");
-	const currentVersion = require("./package.json").version;
-	if (compareVersion(version, currentVersion) === 1)
-		utils.log.master("NEW VERSION", getText(
-			"Goat",
-			"newVersionDetected",
-			colors.gray(currentVersion),
-			colors.hex("#eb6a07", version),
-			colors.hex("#eb6a07", "node update")
-		));
-	// —————————— CHECK FOLDER GOOGLE DRIVE —————————— //
-	const parentIdGoogleDrive = await utils.drive.checkAndCreateParentFolder("GoatBot");
-	utils.drive.parentID = parentIdGoogleDrive;
 	// ———————————————————— LOGIN ———————————————————— //
 	require(`./bot/login/login${NODE_ENV === 'development' ? '.dev.js' : '.js'}`);
 })();
-
-function compareVersion(version1, version2) {
-	const v1 = version1.split(".");
-	const v2 = version2.split(".");
-	for (let i = 0; i < 3; i++) {
-		if (parseInt(v1[i]) > parseInt(v2[i]))
-			return 1; // version1 > version2
-		if (parseInt(v1[i]) < parseInt(v2[i]))
-			return -1; // version1 < version2
-	}
-	return 0; // version1 = version2
-}
