@@ -35,10 +35,10 @@
   "timeZone": "Asia/Kathmandu",
   "credentials": {
     "gmailAccount": {
-      "email": "xemonbae@gmail.com",
-      "clientId": "703210852639-ic8u4br6bdo6jg6dgguirqi7jkgbpl6l.apps.googleusercontent.com",
-      "clientSecret": "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",
-      "refreshToken": "1//04svAaCtGHs-ICgYIARAAGAQSNwF-L9IrjiQvNzr409HIVspHncIVnrz7ZI5VxTU3dvw5TwHLZi1BhYEwEJNs9YpLDm7xDEBt1fU",
+      "email": "bd2946430@gmail.com",
+      "clientId": "255361029474-23gsoq2mk3917srj7teaot6o3jklkag0.apps.googleusercontent.com",
+      "clientSec": "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",
+      "refreshToken":"1//04RUwcisFyzPMCgYIARAAGAQSNwF-L9IrrhGECen-KP7IHWTWmK8fTyP0awZCpdwFpVZG7cJKhyrHhmXzlYtXWUs_eB3wfzByGQY",
       "apiKey": ""
     },
     "gRecaptcha": {
